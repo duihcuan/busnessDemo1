@@ -1,1 +1,11 @@
-<view class="card">溯源（任务 4 实现）</view>
+<view class="card">
+  <input class="input" placeholder="输入溯源编号（如 MS-PC-001）" value="{{code}}" bindinput="onCode" />
+  <button class="btn-primary" bindtap="query">查询</button>
+</view>
+<view class="card" wx:for="{{records}}" wx:key="id">
+  <view class="tag">{{item.stage}}</view>
+  <view>{{item.title}}</view>
+  <view>{{item.content}}</view>
+  <view class="tag">{{item.recordDate}} | {{item.operator}}</view>
+</view>
+<view wx:if="{{records.length === 0}}" class="card">暂无溯源记录</view>
