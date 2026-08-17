@@ -60,7 +60,7 @@ backend/
       dto/RoomDTO.java, RoomProductDTO.java, DanmakuDTO.java
   src/main/resources/
     application.yml
-    db/schema.sql                           # 14 张表（DROP + CREATE）
+    db/schema.sql                           # 15 张表（DROP + CREATE）
     db/data.sql                             # 演示种子数据
   src/test/java/com/meishan/agri/
     BaseTest.java                           # @SpringBootTest + MockMvc + H2
@@ -386,7 +386,7 @@ class SeedTest extends BaseTest {
 运行：`cd backend && mvn test -Dtest=SeedTest`
 预期：FAIL（表不存在，或数量不符）
 
-- [ ] **步骤 3：编写 schema.sql（14 张表，DROP + CREATE）**
+- [ ] **步骤 3：编写 schema.sql（15 张表，DROP + CREATE）**
 
 ```sql
 DROP TABLE IF EXISTS rag_message;

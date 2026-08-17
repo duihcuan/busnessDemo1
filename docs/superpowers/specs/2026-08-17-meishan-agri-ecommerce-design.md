@@ -51,7 +51,7 @@
                         │          │
               ┌─────────▼───┐   ┌──▼──────────────┐
               │ MySQL 8     │   │ 本地文件存储      │
-              │ 14 张业务表   │   │ 图片/预录视频     │
+               │ 15 张业务表   │   │ 图片/预录视频     │
               └─────────────┘   └─────────────────┘
               ┌────────────────────────────────────┐
               │ AI 层（rag 模块内部）                  │
@@ -89,7 +89,7 @@
 
 模块之间通过 service 接口调用，不跨模块直接依赖对方 controller。
 
-## 6. 数据模型（MySQL，14 张表）
+## 6. 数据模型（MySQL，15 张表）
 
 | 表 | 关键字段 |
 |---|---|
@@ -98,6 +98,7 @@
 | user_address | id, user_id, receiver, phone, province, city, district, detail, is_default |
 | product_category | id, name(泡菜专区/柑橘专区/助农特产), sort |
 | product | id, seller_id, category_id, name, main_image, images(JSON), spec_text, price, stock, origin, trace_code, description, status(ON_SALE/OFF_SALE), sold_count |
+| cart_item | id, user_id, product_id, quantity |
 | orders | id, order_no, user_id, seller_id, total_amount, status(PENDING_PAY/PAID/SHIPPED/COMPLETED/REFUNDED/CANCELLED), receiver_name, receiver_phone, receiver_address, logistics_company, logistics_no, pay_time, ship_time, finish_time, remark |
 | order_item | id, order_id, product_id, product_name, product_image, spec_text, price, quantity, subtotal |
 | live_room | id, seller_id, title, cover_url, video_url, status(LIVE/OFFLINE), created_at |
