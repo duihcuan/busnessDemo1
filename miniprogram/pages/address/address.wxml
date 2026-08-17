@@ -1,1 +1,20 @@
-<view class="card">地址管理（任务 5 实现）</view>
+<view class="card" wx:for="{{list}}" wx:key="id">
+  <view>{{item.receiver}} {{item.phone}} <text wx:if="{{item.isDefault === 1}}" class="tag">默认</text></view>
+  <view>{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</view>
+  <button size="mini" data-id="{{item.id}}" bindtap="onSetDefault">设为默认</button>
+  <button size="mini" data-item="{{item}}" bindtap="openForm">编辑</button>
+  <button size="mini" data-id="{{item.id}}" bindtap="onDelete">删除</button>
+</view>
+<view style="padding:20rpx;"><button class="btn-primary" bindtap="openForm">新增地址</button></view>
+<view wx:if="{{showForm}}">
+  <view class="card">
+    <input class="input" placeholder="收件人" value="{{form.receiver}}" data-field="receiver" bindinput="onField" />
+    <input class="input" placeholder="电话" value="{{form.phone}}" data-field="phone" bindinput="onField" />
+    <input class="input" placeholder="省" value="{{form.province}}" data-field="province" bindinput="onField" />
+    <input class="input" placeholder="市" value="{{form.city}}" data-field="city" bindinput="onField" />
+    <input class="input" placeholder="区/县" value="{{form.district}}" data-field="district" bindinput="onField" />
+    <input class="input" placeholder="详细地址" value="{{form.detail}}" data-field="detail" bindinput="onField" />
+    <button class="btn-primary" bindtap="onSave">保存</button>
+    <button bindtap="onCancelForm">取消</button>
+  </view>
+</view>

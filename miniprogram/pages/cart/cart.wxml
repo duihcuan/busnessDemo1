@@ -1,1 +1,10 @@
-<view class="card">购物车（任务 5 实现）</view>
+<view class="card" wx:for="{{items}}" wx:key="id">
+  <view>{{item.productName}} <text class="tag">{{item.specText}}</text></view>
+  <view class="price">¥{{item.price}}</view>
+  <input class="input" type="number" value="{{item.quantity}}" data-id="{{item.id}}" bindinput="onQty" />
+  <button size="mini" data-id="{{item.id}}" bindtap="onDelete">删除</button>
+</view>
+<view wx:if="{{items.length === 0}}" class="card">购物车是空的</view>
+<view style="padding:20rpx;">
+  <button class="btn-primary" bindtap="goCheckout">去结算</button>
+</view>
