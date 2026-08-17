@@ -26,6 +26,12 @@ INSERT INTO trace_record (id, trace_code, product_id, stage, title, content, rec
 (3, 'MS-PC-001', 1, 'QC', '出厂质检', '亚硝酸盐、微生物指标检测合格', '2026-05-12 15:00:00', '眉山市产品质量检验所'),
 (4, 'MS-PC-001', 1, 'LOGISTICS', '冷链发货', '恒温冷链车运输至销地仓', '2026-05-14 08:00:00', '平台物流部');
 
+INSERT INTO trace_record (id, trace_code, product_id, stage, title, content, record_date, operator) VALUES
+(5, 'MS-GJ-001', 3, 'PLANT', '果园种植', '丹棱桔橙标准化果园，水肥一体管理', '2026-03-15 09:00:00', '丹棱县农业农村局'),
+(6, 'MS-GJ-001', 3, 'PROCESS', '分级分选', '按丹棱标准分级，A 级果自动分选线', '2026-06-01 10:00:00', '丹棱桔橙合作社'),
+(7, 'MS-GJ-001', 3, 'QC', '农残检测', '农残检测合格，附检测报告', '2026-06-02 15:00:00', '眉山市产品质量检验所'),
+(8, 'MS-GJ-001', 3, 'LOGISTICS', '冷链直发', '产地冷链车直发，48 小时送达', '2026-06-03 08:00:00', '平台物流部');
+
 INSERT INTO live_room (id, seller_id, title, cover_url, video_url, status) VALUES
 (1, 2, '东坡泡菜产地直播', '', 'https://www.w3schools.com/html/mov_bbb.mp4', 'LIVE');
 
