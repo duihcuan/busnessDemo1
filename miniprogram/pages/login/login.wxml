@@ -1,1 +1,6 @@
-<view class="card">登录页（任务 2 实现）</view>
+<view class="card">
+  <view class="section-title">眉山助农商城</view>
+  <button class="btn-primary" bindtap="onWechatLogin">微信一键登录</button>
+  <input class="input" placeholder="手机号（模拟登录）" value="{{phone}}" bindinput="onPhone" />
+  <button bindtap="onMockLogin">模拟登录</button>
+</view>

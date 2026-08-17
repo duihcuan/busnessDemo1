@@ -1,1 +1,7 @@
-<view class="card">我的（任务 2 实现）</view>
+<view class="card">
+  <view class="section-title">{{user.nickname || '未登录'}}</view>
+  <button bindtap="goOrders">我的订单</button>
+  <button bindtap="goAddress">收货地址</button>
+  <button bindtap="goChat">在线客服</button>
+  <button bindtap="onLogout">退出登录</button>
+</view>
