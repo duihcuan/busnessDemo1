@@ -17,6 +17,14 @@ class BaseTest {
     @Autowired
     protected MockMvc mockMvc;
 
+    protected long idFrom(String json) {
+        return com.jayway.jsonpath.JsonPath.parse(json).read("$.data.id", Long.class);
+    }
+
+    protected String tokenFrom(String json) {
+        return com.jayway.jsonpath.JsonPath.parse(json).read("$.data.token", String.class);
+    }
+
     @Test
     void pingReturnsOk() throws Exception {
         mockMvc.perform(get("/api/ping"))

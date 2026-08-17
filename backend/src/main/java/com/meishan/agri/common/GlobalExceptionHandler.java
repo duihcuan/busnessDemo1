@@ -1,9 +1,11 @@
 package com.meishan.agri.common;
 
 import cn.dev33.satoken.exception.NotLoginException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(BizException.class)
@@ -16,5 +18,8 @@ public class GlobalExceptionHandler {
     public Result<Void> notRole(cn.dev33.satoken.exception.NotRoleException e) { return Result.fail(403, "无权限"); }
 
     @ExceptionHandler(Exception.class)
-    public Result<Void> other(Exception e) { return Result.fail(500, "系统异常"); }
+    public Result<Void> other(Exception e) {
+        log.error("unexpected error", e);
+        return Result.fail(500, "系统异常");
+    }
 }
