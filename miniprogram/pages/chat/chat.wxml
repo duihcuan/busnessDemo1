@@ -1,1 +1,17 @@
-<view class="card">在线客服（任务 8 实现）</view>
+<view class="card">
+  <view class="tag" wx:for="{{examples}}" wx:key="*this" data-q="{{item}}" bindtap="onExample">{{item}}</view>
+</view>
+<view class="card" wx:for="{{messages}}" wx:key="index">
+  <view wx:if="{{item.role === 'user'}}" style="text-align:right;">{{item.content}}</view>
+  <block wx:else>
+    <view>{{item.content}}</view>
+    <view wx:if="{{item.offline}}" class="tag">离线回答</view>
+    <view wx:for="{{item.sources}}" wx:for-item="src" wx:key="docId">[来源:{{src.title}}]</view>
+    <button wx:if="{{item.messageId}}" size="mini" data-id="{{item.messageId}}" data-fb="UP" bindtap="onFeedback">有用</button>
+    <button wx:if="{{item.messageId}}" size="mini" data-id="{{item.messageId}}" data-fb="DOWN" bindtap="onFeedback">没用</button>
+  </block>
+</view>
+<view style="display:flex; padding:20rpx;">
+  <input class="input" placeholder="请输入问题" value="{{input}}" bindinput="onInput" style="flex:1;" />
+  <button class="btn-primary" size="mini" bindtap="send">发送</button>
+</view>
