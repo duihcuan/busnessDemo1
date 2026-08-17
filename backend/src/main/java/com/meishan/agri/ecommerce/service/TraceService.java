@@ -16,8 +16,8 @@ public class TraceService {
     public List<TraceRecord> findByCode(String code) {
         return traceRecordMapper.selectList(Wrappers.<TraceRecord>lambdaQuery()
                 .eq(TraceRecord::getTraceCode, code)
-                .orderByAsc(TraceRecord::getStage)
-                .orderByAsc(TraceRecord::getRecordDate));
+                .orderByAsc(TraceRecord::getRecordDate)
+                .orderByAsc(TraceRecord::getId));
     }
 
     public List<TraceRecord> listAll() {
