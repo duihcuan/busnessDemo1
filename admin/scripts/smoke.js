@@ -3,30 +3,30 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 
 function read(file) {
-  return fs.readFileSync(path.join(root, 'src/views', file), 'utf8');
+  return fs.readFileSync(path.join(root, file), 'utf8');
 }
 
 const checks = [
-  ['Login.vue', '/auth/admin-login'],
-  ['Layout.vue', '仪表盘'],
-  ['Layout.vue', '商品管理'],
-  ['Layout.vue', '订单管理'],
-  ['Layout.vue', '直播管理'],
-  ['Layout.vue', '溯源维护'],
-  ['Layout.vue', '知识库管理'],
-  ['Dashboard.vue', '/seller/stats'],
-  ['Dashboard.vue', '/admin/stats'],
-  ['Products.vue', '/products'],
-  ['Products.vue', '/status'],
-  ['Orders.vue', '/seller/orders'],
-  ['Orders.vue', '/ship'],
-  ['Orders.vue', '/refund'],
-  ['Live.vue', '/live/rooms'],
-  ['Live.vue', '/products'],
-  ['Trace.vue', '/trace'],
-  ['Knowledge.vue', '/rag/documents'],
-  ['Knowledge.vue', '/rag/chat'],
-  ['Knowledge.vue', '/rag/messages']
+  ['src/stores/auth.js', '/auth/admin-login'],
+  ['src/views/Layout.vue', '仪表盘'],
+  ['src/views/Layout.vue', '商品管理'],
+  ['src/views/Layout.vue', '订单管理'],
+  ['src/views/Layout.vue', '直播管理'],
+  ['src/views/Layout.vue', '溯源维护'],
+  ['src/views/Layout.vue', '知识库管理'],
+  ['src/views/Dashboard.vue', '/seller/stats'],
+  ['src/views/Dashboard.vue', '/admin/stats'],
+  ['src/views/Products.vue', '/products'],
+  ['src/views/Products.vue', '/status'],
+  ['src/views/Orders.vue', '/seller/orders'],
+  ['src/views/Orders.vue', '/ship'],
+  ['src/views/Orders.vue', '/refund'],
+  ['src/views/Live.vue', '/live/rooms'],
+  ['src/views/Live.vue', '/products'],
+  ['src/views/Trace.vue', '/trace'],
+  ['src/views/Knowledge.vue', '/rag/documents'],
+  ['src/views/Knowledge.vue', '/rag/chat'],
+  ['src/views/Knowledge.vue', '/rag/messages']
 ];
 
 const errors = [];
