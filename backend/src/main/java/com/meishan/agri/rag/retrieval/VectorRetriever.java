@@ -1,6 +1,8 @@
 package com.meishan.agri.rag.retrieval;
 
 public class VectorRetriever {
+    public VectorRetriever() {}
+
     public static float cosine(float[] a, float[] b) {
         if (a == null || b == null || a.length == 0 || a.length != b.length) return 0f;
         double dot = 0, na = 0, nb = 0;

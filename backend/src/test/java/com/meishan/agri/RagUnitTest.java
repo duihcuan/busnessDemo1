@@ -28,4 +28,16 @@ class RagUnitTest {
         assertEquals(1.0f, VectorRetriever.cosine(a, b), 1e-5);
         assertTrue(VectorRetriever.cosine(a, c) < 0.01f);
     }
+
+    @Test
+    void bm25RanksKeywordMatchFirst() {
+        var retriever = new com.meishan.agri.rag.retrieval.KeywordRetriever();
+        var chunks = List.of(
+                "东坡泡菜发酵 60 天，口感酸爽",
+                "柑橘储存需要预冷和通风",
+                "平台客服帮助农户学习店铺运营");
+        var ranked = retriever.score("泡菜 发酵 60 天", chunks);
+        assertEquals(0, ranked.get(0).index());
+        assertTrue(ranked.get(0).score() > ranked.get(1).score());
+    }
 }
