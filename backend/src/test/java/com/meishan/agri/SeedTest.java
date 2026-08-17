@@ -25,6 +25,7 @@ class SeedTest extends BaseTest {
         assertTrue(products >= 6);
         assertEquals(0, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM orders", Integer.class));
         assertEquals(1, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM live_room", Integer.class));
-        assertEquals(0, jdbcTemplate.queryForObject("SELECT COUNT(*) FROM kb_chunk", Integer.class));
+        assertTrue(jdbcTemplate.queryForObject("SELECT COUNT(*) FROM kb_chunk", Integer.class) > 0,
+                "RAG 种子知识库应在启动时完成切分入库");
     }
 }
