@@ -1,1 +1,14 @@
-<view class="card">确认订单（任务 6 实现）</view>
+<view class="card" bindtap="pickAddress">
+  <view wx:if="{{address}}">{{address.receiver}} {{address.phone}}</view>
+  <view wx:if="{{address}}">{{address.province}}{{address.city}}{{address.district}}{{address.detail}}</view>
+  <view wx:else>请选择收货地址</view>
+</view>
+<view class="card" wx:if="{{product}}">
+  <view>{{product.name}} x {{qty}}</view>
+  <view class="price">¥{{product.price * qty}}</view>
+</view>
+<view class="card" wx:for="{{cartItems}}" wx:key="id">
+  <view>{{item.productName}} x {{item.quantity}}</view>
+  <view class="price">¥{{item.price * item.quantity}}</view>
+</view>
+<view style="padding:20rpx;"><button class="btn-primary" bindtap="onSubmit">提交订单</button></view>

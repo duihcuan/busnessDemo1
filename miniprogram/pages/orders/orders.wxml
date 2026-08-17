@@ -1,1 +1,11 @@
-<view class="card">订单列表（任务 6 实现）</view>
+<view class="card" wx:for="{{orders}}" wx:key="id">
+  <view>订单号 {{item.orderNo}} | <text class="tag">{{statusMap[item.status]}}</text></view>
+  <view>金额 <text class="price">¥{{item.totalAmount}}</text></view>
+  <view wx:if="{{item.logisticsNo}}">物流：{{item.logisticsCompany}} {{item.logisticsNo}}</view>
+  <view wx:if="{{item.receiverName}}">收件：{{item.receiverName}} {{item.receiverPhone}}</view>
+  <button wx:if="{{item.status === 'PENDING_PAY'}}" size="mini" data-id="{{item.id}}" data-act="pay" bindtap="action">模拟支付</button>
+  <button wx:if="{{item.status === 'PENDING_PAY'}}" size="mini" data-id="{{item.id}}" data-act="cancel" bindtap="action">取消订单</button>
+  <button wx:if="{{item.status === 'PAID' || item.status === 'SHIPPED' || item.status === 'COMPLETED'}}" size="mini" data-id="{{item.id}}" data-act="refund" bindtap="action">申请退款</button>
+  <button wx:if="{{item.status === 'SHIPPED'}}" size="mini" data-id="{{item.id}}" data-act="confirm" bindtap="action">确认收货</button>
+</view>
+<view wx:if="{{orders.length === 0}}" class="card">暂无订单</view>
