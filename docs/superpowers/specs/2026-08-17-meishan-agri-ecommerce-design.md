@@ -69,7 +69,7 @@
 |---|---|---|
 | 小程序 | 微信原生小程序（WXML/WXSS/JS） | 不引入 uni-app，减少框架依赖 |
 | 管理后台 | Vue 3 + Vite + Element Plus + Pinia + Axios | 标准组合，管理端 UI 现成 |
-| 后端 | Spring Boot 3.x + JDK 17 | 稳定 LTS 组合 |
+| 后端 | Spring Boot 3.x + JDK 17+（本机 21） | 稳定 LTS 组合 |
 | ORM | MyBatis-Plus | 中文生态、开发效率高 |
 | 认证 | Sa-Token（JWT 风格 token） | 与 ragent 一致，轻量、文档全 |
 | 数据库 | MySQL 8 | 单库 |

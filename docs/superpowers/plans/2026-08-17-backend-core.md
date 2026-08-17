@@ -6,7 +6,7 @@
 
 **架构：** Spring Boot 3 模块化单体（按包划分 system / ecommerce / live / common），Sa-Token 认证，MyBatis-Plus 操作 MySQL 单库，图片与视频存本地 uploads 目录并静态映射。
 
-**技术栈：** Java 17、Spring Boot 3.2、MyBatis-Plus 3.5、Sa-Token 1.38、MySQL 8、Lombok、JUnit 5 + MockMvc（测试用 H2 内存库）。
+**技术栈：** Java 17+（本机为 21）、Spring Boot 3.2、MyBatis-Plus 3.5、Sa-Token 1.38、MySQL 8、Lombok、JUnit 5 + MockMvc（测试用 H2 内存库）。
 
 ---
 
