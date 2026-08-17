@@ -1,1 +1,12 @@
-<view class="card">分类页（任务 3 实现）</view>
+<view class="card">
+  <input class="input" placeholder="搜索商品" value="{{keyword}}" bindinput="onKeyword" confirm-type="search" bindconfirm="onSearch" />
+  <view class="tag" wx:for="{{categories}}" wx:key="id" data-i="{{index}}" bindtap="onTab"
+        style="{{index === current ? 'background:#1e8e3e;color:#fff;' : ''}}">{{item.name}}</view>
+</view>
+<view class="card" wx:for="{{products}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+  <view>{{item.name}}</view>
+  <view class="price">¥{{item.price}}</view>
+  <view class="tag">{{item.specText}}</view>
+  <view>库存 {{item.stock}} | {{item.origin}}</view>
+</view>
+<view wx:if="{{products.length === 0}}" class="card">暂无商品</view>
