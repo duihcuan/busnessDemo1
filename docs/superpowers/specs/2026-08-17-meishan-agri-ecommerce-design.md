@@ -98,7 +98,7 @@
 | user_address | id, user_id, receiver, phone, province, city, district, detail, is_default |
 | product_category | id, name(泡菜专区/柑橘专区/助农特产), sort |
 | product | id, seller_id, category_id, name, main_image, images(JSON), spec_text, price, stock, origin, trace_code, description, status(ON_SALE/OFF_SALE), sold_count |
-| orders | id, order_no, user_id, seller_id, total_amount, status(PENDING_PAY/PAID/PENDING_SHIP/SHIPPED/COMPLETED/REFUNDED/CANCELLED), receiver_snapshot(JSON), logistics_company, logistics_no, pay_time, ship_time, finish_time, remark |
+| orders | id, order_no, user_id, seller_id, total_amount, status(PENDING_PAY/PAID/SHIPPED/COMPLETED/REFUNDED/CANCELLED), receiver_name, receiver_phone, receiver_address, logistics_company, logistics_no, pay_time, ship_time, finish_time, remark |
 | order_item | id, order_id, product_id, product_name, product_image, spec_text, price, quantity, subtotal |
 | live_room | id, seller_id, title, cover_url, video_url, status(LIVE/OFFLINE), created_at |
 | live_product | id, room_id, product_id, live_price, sort |
@@ -130,7 +130,7 @@
 | 文件 | POST /api/files/upload（图片，返回 URL；直播视频同样走此接口） |
 | 购物车 | GET/POST /api/cart；PUT/DELETE /api/cart/{id} |
 | 地址 | GET/POST /api/addresses；PUT/DELETE /api/addresses/{id} |
-| 订单 | POST /api/orders；POST /api/orders/{id}/pay；GET /api/orders；GET /api/orders/{id}；POST /api/orders/{id}/confirm；POST /api/orders/{id}/refund |
+| 订单 | POST /api/orders；POST /api/orders/{id}/pay；POST /api/orders/{id}/cancel；GET /api/orders；GET /api/orders/{id}；POST /api/orders/{id}/confirm；POST /api/orders/{id}/refund |
 | 商家/管理员 | POST/PUT/DELETE /api/products；GET /api/seller/orders；GET /api/seller/orders/{id}；PUT /api/orders/{id}/ship；GET /api/seller/stats；GET /api/admin/stats |
 | 直播 | GET /api/live/rooms；GET /api/live/rooms/{id}；POST/PUT /api/live/rooms；PUT /api/live/rooms/{id}/products；POST/GET /api/live/rooms/{id}/danmaku |
 | RAG | POST /api/rag/documents（入库）；GET/DELETE /api/rag/documents；POST /api/rag/chat?stream=true（SSE/JSON）；GET /api/rag/messages；POST /api/rag/messages/{id}/feedback |
@@ -141,7 +141,7 @@
 
 ### 8.1 下单支付闭环
 
-商品详情/直播间 → 加购或立即购买 → 选择收货地址 → 提交订单（PENDING_PAY）→ 模拟支付（支付渠道 MOCK_WECHAT/MOCK_BALANCE，后端直接置为 PAID）→ 商家后台发货（填物流公司+单号，置 SHIPPED）→ 用户查看物流（静态四阶段）→ 确认收货（COMPLETED）。待发货/已发货订单可发起模拟退款，自动通过并回补库存（REFUNDED）。
+商品详情/直播间 → 加购或立即购买 → 选择收货地址 → 提交订单（PENDING_PAY）→ 模拟支付（支付渠道 MOCK_WECHAT/MOCK_BALANCE，后端直接置为 PAID，PAID 即"已支付待发货"）→ 商家后台发货（填物流公司+单号，置 SHIPPED）→ 用户查看物流（静态四阶段）→ 确认收货（COMPLETED）。未支付订单可取消（CANCELLED，回补库存）；已支付/已发货/已完成订单可发起模拟退款，自动通过并回补库存（REFUNDED）。
 
 ### 8.2 RAG 问答链路（参考 ragent 简化）
 
