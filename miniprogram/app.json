@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/category/category",
+    "pages/cart/cart",
+    "pages/me/me",
+    "pages/login/login",
+    "pages/detail/detail",
+    "pages/trace/trace",
+    "pages/address/address",
+    "pages/confirm/confirm",
+    "pages/orders/orders",
+    "pages/live/live",
+    "pages/liveroom/liveroom",
+    "pages/chat/chat"
+  ],
+  "window": {
+    "navigationBarTitleText": "眉山助农商城",
+    "navigationBarBackgroundColor": "#1e8e3e",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#1e8e3e",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/category/category", "text": "分类" },
+      { "pagePath": "pages/cart/cart", "text": "购物车" },
+      { "pagePath": "pages/me/me", "text": "我的" }
+    ]
+  },
+  "style": "v2"
+}

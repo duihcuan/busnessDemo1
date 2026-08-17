@@ -1,0 +1,13 @@
+<view class="card">
+  <view class="section-title">直播助农</view>
+  <button class="btn-primary" bindtap="goLive">进入直播间</button>
+</view>
+<view class="card">
+  <view class="section-title">分类</view>
+  <view class="tag" wx:for="{{categories}}" wx:key="id" bindtap="goCategory">{{item.name}}</view>
+</view>
+<view class="card" wx:for="{{products}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+  <view>{{item.name}}</view>
+  <view class="price">¥{{item.price}}</view>
+  <view class="tag">{{item.specText}}</view>
+</view>
