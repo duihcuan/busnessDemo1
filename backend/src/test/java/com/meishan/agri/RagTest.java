@@ -92,4 +92,15 @@ class RagTest extends BaseTest {
                         .content("{\"feedback\":\"UP\"}"))
                 .andExpect(jsonPath("$.code").value(200));
     }
+
+    @Test
+    void seedDocsAreIngestedOnStartup() throws Exception {
+        String token = adminToken();
+        mockMvc.perform(get("/api/rag/documents").header("satoken", token))
+                .andExpect(jsonPath("$.data.total").value(org.hamcrest.Matchers.greaterThanOrEqualTo(6)));
+        mockMvc.perform(post("/api/rag/chat").header("satoken", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"question\":\"柑橘储存\"}"))
+                .andExpect(jsonPath("$.data.sources.length()").value(org.hamcrest.Matchers.greaterThanOrEqualTo(1)));
+    }
 }
