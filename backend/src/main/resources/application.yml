@@ -29,3 +29,10 @@ mybatis-plus:
 wx:
   appid: ""
   secret: ""
+deepseek:
+  api-key: ${DEEPSEEK_API_KEY:}
+  base-url: https://api.deepseek.com
+  model: deepseek-chat
+rag:
+  bge-model-path: backend/models/bge-small-zh-v1.5.onnx
+  top-k: 3
