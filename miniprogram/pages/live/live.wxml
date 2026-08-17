@@ -1,1 +1,5 @@
-<view class="card">直播列表（任务 7 实现）</view>
+<view class="card" wx:for="{{rooms}}" wx:key="id" data-id="{{item.id}}" bindtap="goRoom">
+  <view class="section-title">{{item.title}}</view>
+  <view class="tag">直播中</view>
+</view>
+<view wx:if="{{rooms.length === 0}}" class="card">暂无直播</view>

@@ -1,1 +1,21 @@
-<view class="card">直播间（任务 7 实现）</view>
+<view class="card">
+  <video src="{{room.videoUrl}}" style="width:100%; height:400rpx;" controls></video>
+  <view class="section-title">{{room.title}}</view>
+</view>
+<view class="card">
+  <view class="section-title">弹幕</view>
+  <scroll-view scroll-y style="height:300rpx;">
+    <view wx:for="{{danmaku}}" wx:key="id">{{item.nickname}}：{{item.content}}</view>
+  </scroll-view>
+  <view style="display:flex;">
+    <input class="input" placeholder="说点什么" value="{{input}}" bindinput="onInput" style="flex:1;" />
+    <button size="mini" bindtap="send">发送</button>
+  </view>
+</view>
+<view class="card">
+  <view class="section-title">直播商品</view>
+  <view wx:for="{{products}}" wx:key="id">
+    <view>商品 ID {{item.productId}} | 直播价 <text class="price">¥{{item.livePrice}}</text></view>
+    <button size="mini" data-id="{{item.productId}}" bindtap="buy">立即购买</button>
+  </view>
+</view>
