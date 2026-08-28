@@ -1,0 +1,12 @@
+.page { min-height: 100vh; background: #f5f6f7; }
+.header { display: flex; align-items: center; padding: 70rpx 44rpx 80rpx; background: linear-gradient(135deg, #1e8e3e 0%, #43a047 60%, #66bb6a 100%); }
+.avatar { width: 128rpx; height: 128rpx; border-radius: 50%; background: rgba(255,255,255,.28); color: #fff; font-size: 56rpx; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 4rpx solid rgba(255,255,255,.65); }
+.user-info { margin-left: 32rpx; }
+.nickname { color: #fff; font-size: 42rpx; font-weight: 700; }
+.role { color: rgba(255,255,255,.85); font-size: 26rpx; margin-top: 12rpx; }
+.menu { background: #fff; border-radius: 22rpx; margin: 26rpx 24rpx 0; overflow: hidden; box-shadow: 0 4rpx 16rpx rgba(0,0,0,.04); }
+.menu-item { display: flex; align-items: center; padding: 32rpx 30rpx; border-bottom: 1rpx solid #f2f2f2; }
+.menu-item:last-child { border-bottom: none; }
+.icon { font-size: 38rpx; margin-right: 22rpx; }
+.label { flex: 1; font-size: 30rpx; color: #333; }
+.arrow { color: #c0c4cc; font-size: 40rpx; }

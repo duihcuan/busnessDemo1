@@ -1,13 +1,26 @@
-<view class="card">
-  <view class="section-title">直播助农</view>
-  <button class="btn-primary" bindtap="goLive">进入直播间</button>
-</view>
-<view class="card">
-  <view class="section-title">分类</view>
-  <view class="tag" wx:for="{{categories}}" wx:key="id" bindtap="goCategory">{{item.name}}</view>
-</view>
-<view class="card" wx:for="{{products}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
-  <view>{{item.name}}</view>
-  <view class="price">¥{{item.price}}</view>
-  <view class="tag">{{item.specText}}</view>
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">眉山助农商城</view>
+    <view class="hero-sub">东坡泡菜 · 丹棱桔橙 · 产地直供</view>
+    <button class="hero-btn" bindtap="goLive">🎥 进入助农直播</button>
+  </view>
+
+  <view class="card">
+    <view class="section-title">商品分类</view>
+    <view class="chips">
+      <view class="chip" wx:for="{{categories}}" wx:key="id" bindtap="goCategory">{{item.name}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">热销推荐</view>
+    <view class="product" wx:for="{{products}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="thumb">{{item.thumb}}</view>
+      <view class="pinfo">
+        <view class="pname">{{item.name}}</view>
+        <view class="ptags"><text class="tag">{{item.specText}}</text><text class="tag">{{item.origin}}</text></view>
+        <view class="pbottom"><text class="price">¥{{item.price}}</text><text class="stock">库存 {{item.stock}}</text></view>
+      </view>
+    </view>
+  </view>
 </view>

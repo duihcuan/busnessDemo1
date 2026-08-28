@@ -1,0 +1,15 @@
+.hero { background: linear-gradient(135deg, #1e8e3e 0%, #43a047 60%, #66bb6a 100%); padding: 60rpx 44rpx 70rpx; }
+.hero-title { color: #fff; font-size: 48rpx; font-weight: 800; }
+.hero-sub { color: rgba(255,255,255,.85); font-size: 26rpx; margin-top: 12rpx; }
+.hero-btn { margin-top: 36rpx; background: rgba(255,255,255,.92); color: #1e8e3e; font-weight: 700; border-radius: 44rpx; font-size: 30rpx; }
+.hero-btn::after { border: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.chip { background: #e8f5e9; color: #1e8e3e; border-radius: 30rpx; padding: 12rpx 30rpx; font-size: 26rpx; }
+.product { display: flex; align-items: center; padding: 22rpx 0; border-bottom: 1rpx solid #f2f2f2; }
+.product:last-child { border-bottom: none; }
+.thumb { width: 120rpx; height: 120rpx; border-radius: 18rpx; background: linear-gradient(135deg, #c8e6c9, #e8f5e9); color: #1e8e3e; font-size: 48rpx; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-right: 24rpx; }
+.pinfo { flex: 1; }
+.pname { font-size: 30rpx; font-weight: 600; }
+.ptags { margin: 12rpx 0; }
+.pbottom { display: flex; justify-content: space-between; align-items: center; }
+.stock { color: #999; font-size: 24rpx; }

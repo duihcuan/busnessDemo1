@@ -25,6 +25,10 @@ Page({
       : this.data.cartItems.map((c) => ({ productId: c.productId, quantity: c.quantity }));
     post('/api/orders', { addressId, items })
       .then((order) => {
+        if (this.data.fromCart) {
+          this.data.cartItems.forEach((c) => del('/api/cart/' + c.id).catch(() => {}));
+          this.setData({ cartItems: [] });
+        }
         wx.showModal({
           title: '模拟支付', content: '确认支付 ¥' + order.totalAmount + '？',
           success: (r) => {
