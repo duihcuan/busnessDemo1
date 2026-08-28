@@ -67,8 +67,8 @@ public class AuthService {
         if (user == null || !user.getPassword().equals(ShaUtil.hash(req.getPassword()))) {
             throw new BizException("用户名或密码错误");
         }
-        if (!"ADMIN".equals(user.getRole())) {
-            throw new BizException("非管理员账号");
+        if (!"ADMIN".equals(user.getRole()) && !"SELLER".equals(user.getRole())) {
+            throw new BizException("非管理员或商家账号");
         }
         return doLogin(user);
     }

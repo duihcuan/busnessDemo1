@@ -21,6 +21,8 @@ public class StpInterfaceImpl implements StpInterface {
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
         User user = userMapper.selectById(Long.valueOf(loginId.toString()));
-        return user == null ? List.of() : List.of(user.getRole());
+                if (user == null) return List.of();
+        if ("ADMIN".equals(user.getRole())) return List.of("ADMIN", "SELLER");
+        return List.of(user.getRole());
     }
 }
