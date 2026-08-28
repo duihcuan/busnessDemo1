@@ -15,7 +15,7 @@
 <view class="card">
   <view class="section-title">直播商品</view>
   <view wx:for="{{products}}" wx:key="id">
-    <view>商品 ID {{item.productId}} | 直播价 <text class="price">¥{{item.livePrice}}</text></view>
+    <view>{{item.productName || '商品#' + item.productId}} | 直播价 <text class="price">¥{{item.livePrice}}</text> | 已售 {{item.soldCount || 0}}</view>
     <button size="mini" data-id="{{item.productId}}" bindtap="buy">立即购买</button>
   </view>
 </view>

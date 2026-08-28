@@ -1,10 +1,10 @@
 const { get, post } = require('../../utils/request');
 
 Page({
-  data: { productId: 0, qty: 1, product: null, cartItems: [], address: null, addresses: [] },
+  data: { productId: 0, qty: 1, liveProductId: 0, product: null, cartItems: [], address: null, addresses: [] },
   onLoad(options) {
     if (options.productId) {
-      this.setData({ productId: Number(options.productId), qty: Number(options.qty || 1) });
+      this.setData({ productId: Number(options.productId), qty: Number(options.qty || 1), liveProductId: Number(options.liveProductId || 0) });
       get('/api/products/' + options.productId).then((product) => this.setData({ product }));
     } else {
       get('/api/cart').then((items) => this.setData({ cartItems: items }));
@@ -21,7 +21,7 @@ Page({
   onSubmit() {
     const addressId = this.data.address ? this.data.address.id : 1;
     const items = this.data.product
-      ? [{ productId: this.data.productId, quantity: this.data.qty }]
+      ? [{ productId: this.data.productId, quantity: this.data.qty, liveProductId: this.data.liveProductId || undefined }]
       : this.data.cartItems.map((c) => ({ productId: c.productId, quantity: c.quantity }));
     post('/api/orders', { addressId, items })
       .then((order) => {

@@ -109,7 +109,8 @@ CREATE TABLE order_item (
   spec_text VARCHAR(128),
   price DECIMAL(10,2),
   quantity INT,
-  subtotal DECIMAL(10,2)
+  subtotal DECIMAL(10,2),
+  live_product_id BIGINT
 );
 
 CREATE TABLE trace_record (
@@ -138,7 +139,8 @@ CREATE TABLE live_product (
   room_id BIGINT NOT NULL,
   product_id BIGINT NOT NULL,
   live_price DECIMAL(10,2),
-  sort INT DEFAULT 0
+  sort INT DEFAULT 0,
+  sold_count INT DEFAULT 0
 );
 
 CREATE TABLE live_danmaku (

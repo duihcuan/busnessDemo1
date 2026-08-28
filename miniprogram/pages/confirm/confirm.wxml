@@ -4,6 +4,7 @@
   <view wx:else>请选择收货地址</view>
 </view>
 <view class="card" wx:if="{{product}}">
+  <view wx:if="{{liveProductId}}" class="tag">直播专享</view>
   <view>{{product.name}} x {{qty}}</view>
   <view class="price">¥{{product.price * qty}}</view>
 </view>

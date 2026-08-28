@@ -14,6 +14,8 @@ import com.meishan.agri.ecommerce.entity.Product;
 import com.meishan.agri.ecommerce.mapper.OrderItemMapper;
 import com.meishan.agri.ecommerce.mapper.OrderMapper;
 import com.meishan.agri.ecommerce.mapper.ProductMapper;
+import com.meishan.agri.live.entity.LiveProduct;
+import com.meishan.agri.live.mapper.LiveProductMapper;
 import com.meishan.agri.system.entity.UserAddress;
 import com.meishan.agri.system.mapper.UserAddressMapper;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class OrderService {
     private final OrderItemMapper orderItemMapper;
     private final ProductMapper productMapper;
     private final UserAddressMapper addressMapper;
+    private final LiveProductMapper liveProductMapper;
 
     @Transactional
     public Orders create(Long userId, OrderCreateDTO dto) {
@@ -46,7 +49,7 @@ public class OrderService {
             Product p = productMapper.selectById(item.getProductId());
             if (p == null || !"ON_SALE".equals(p.getStatus())) throw new BizException("商品不可购买");
             if (p.getStock() < item.getQuantity()) throw new BizException("商品库存不足：" + p.getName());
-            total = total.add(p.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            total = total.add(itemPrice(item, p).multiply(BigDecimal.valueOf(item.getQuantity())));
             sellerId = p.getSellerId();
         }
 
@@ -71,12 +74,22 @@ public class OrderService {
             oi.setProductName(p.getName());
             oi.setProductImage(p.getMainImage());
             oi.setSpecText(p.getSpecText());
-            oi.setPrice(p.getPrice());
+            BigDecimal unitPrice = itemPrice(item, p);
+            oi.setPrice(unitPrice);
             oi.setQuantity(item.getQuantity());
-            oi.setSubtotal(p.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
+            oi.setSubtotal(unitPrice.multiply(BigDecimal.valueOf(item.getQuantity())));
+            oi.setLiveProductId(item.getLiveProductId());
             orderItemMapper.insert(oi);
             p.setStock(p.getStock() - item.getQuantity());
+            p.setSoldCount(p.getSoldCount() == null ? item.getQuantity() : p.getSoldCount() + item.getQuantity());
             productMapper.updateById(p);
+            if (item.getLiveProductId() != null) {
+                LiveProduct lp = liveProductMapper.selectById(item.getLiveProductId());
+                if (lp != null) {
+                    lp.setSoldCount(lp.getSoldCount() == null ? item.getQuantity() : lp.getSoldCount() + item.getQuantity());
+                    liveProductMapper.updateById(lp);
+                }
+            }
         }
         return order;
     }
@@ -147,6 +160,15 @@ public class OrderService {
         return dto;
     }
 
+    private BigDecimal itemPrice(OrderItemDTO item, Product p) {
+        if (item.getLiveProductId() != null) {
+            LiveProduct lp = liveProductMapper.selectById(item.getLiveProductId());
+            if (lp == null || !lp.getProductId().equals(p.getId())) throw new BizException("直播商品不存在");
+            return lp.getLivePrice() == null ? p.getPrice() : lp.getLivePrice();
+        }
+        return p.getPrice();
+    }
+
     private Orders ownedByUser(Long userId, Long orderId) {
         Orders o = orderMapper.selectById(orderId);
         if (o == null || !o.getUserId().equals(userId)) throw new BizException("订单不存在");
@@ -170,7 +192,15 @@ public class OrderService {
             Product p = productMapper.selectById(item.getProductId());
             if (p != null) {
                 p.setStock(p.getStock() + item.getQuantity());
+                if (p.getSoldCount() != null) p.setSoldCount(Math.max(0, p.getSoldCount() - item.getQuantity()));
                 productMapper.updateById(p);
+            }
+            if (item.getLiveProductId() != null) {
+                LiveProduct lp = liveProductMapper.selectById(item.getLiveProductId());
+                if (lp != null) {
+                    lp.setSoldCount(lp.getSoldCount() == null ? 0 : Math.max(0, lp.getSoldCount() - item.getQuantity()));
+                    liveProductMapper.updateById(lp);
+                }
             }
         }
     }

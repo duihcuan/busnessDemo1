@@ -47,6 +47,8 @@ class LiveTest extends BaseTest {
                 .andExpect(jsonPath("$.code").value(200));
         mockMvc.perform(get("/api/live/rooms/1"))
                 .andExpect(jsonPath("$.data.products.length()").value(1))
-                .andExpect(jsonPath("$.data.products[0].productId").value(2));
+                .andExpect(jsonPath("$.data.products[0].productId").value(2))
+                .andExpect(jsonPath("$.data.products[0].productName").value("东坡泡菜·礼盒装"))
+                .andExpect(jsonPath("$.data.products[0].soldCount").value(0));
     }
 }

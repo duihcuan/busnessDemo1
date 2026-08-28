@@ -21,6 +21,6 @@ Page({
   },
   buy(e) {
     const p = this.data.products.find((x) => x.productId === e.currentTarget.dataset.id);
-    wx.navigateTo({ url: '/pages/confirm/confirm?productId=' + p.productId + '&qty=1' });
+    xx.navigateTo({ url: '/pages/confirm/confirm?productId=' + p.productId + '&qty=1' });
   }
 });

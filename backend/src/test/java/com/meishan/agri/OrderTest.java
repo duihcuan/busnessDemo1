@@ -1,12 +1,18 @@
 package com.meishan.agri;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 class OrderTest extends BaseTest {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private String login(String phone) throws Exception {
         return mockMvc.perform(post("/api/auth/mock-login")
@@ -74,5 +80,33 @@ class OrderTest extends BaseTest {
 
         mockMvc.perform(get("/api/products/5"))
                 .andExpect(jsonPath("$.data.stock").value(80));
+    }
+    @Test
+    void liveSaleIncrementsSoldCountAndRefundRestores() throws Exception {
+        String buyer = login("13900000001");
+        String order = mockMvc.perform(post("/api/orders").header("satoken", buyer)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"addressId\":1,\"items\":[{\"productId\":1,\"quantity\":2,\"liveProductId\":1}]}"))
+                .andExpect(jsonPath("$.data.status").value("PENDING_PAY"))
+                .andReturn().getResponse().getContentAsString();
+        long orderId = idFrom(order);
+
+        mockMvc.perform(post("/api/orders/" + orderId + "/pay").header("satoken", buyer)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"channel\":\"MOCK_WECHAT\"}"))
+                .andExpect(jsonPath("$.data.status").value("PAID"));
+
+        assertEquals(2, (int) jdbcTemplate.queryForObject(
+                "SELECT sold_count FROM live_product WHERE id = 1", Integer.class));
+        assertEquals(2, (int) jdbcTemplate.queryForObject(
+                "SELECT sold_count FROM product WHERE id = 1", Integer.class));
+
+        mockMvc.perform(post("/api/orders/" + orderId + "/refund").header("satoken", buyer))
+                .andExpect(jsonPath("$.data.status").value("REFUNDED"));
+
+        assertEquals(0, (int) jdbcTemplate.queryForObject(
+                "SELECT sold_count FROM live_product WHERE id = 1", Integer.class));
+        assertEquals(0, (int) jdbcTemplate.queryForObject(
+                "SELECT sold_count FROM product WHERE id = 1", Integer.class));
     }
 }

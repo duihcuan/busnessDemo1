@@ -16,4 +16,5 @@ public class LiveProduct {
     private Long productId;
     private BigDecimal livePrice;
     private Integer sort;
+    private Integer soldCount;
 }

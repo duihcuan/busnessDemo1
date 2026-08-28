@@ -2,6 +2,9 @@ package com.meishan.agri.live.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.meishan.agri.common.BizException;
+import com.meishan.agri.ecommerce.entity.Product;
+import com.meishan.agri.ecommerce.mapper.ProductMapper;
+import com.meishan.agri.live.dto.LiveProductVO;
 import com.meishan.agri.live.dto.RoomDTO;
 import com.meishan.agri.live.dto.RoomProductDTO;
 import com.meishan.agri.live.entity.LiveDanmaku;
@@ -22,6 +25,7 @@ public class LiveService {
     private final LiveRoomMapper roomMapper;
     private final LiveProductMapper productMapper;
     private final LiveDanmakuMapper danmakuMapper;
+    private final ProductMapper productRepo;
 
     public List<LiveRoom> listLiveRooms() {
         return roomMapper.selectList(Wrappers.<LiveRoom>lambdaQuery()
@@ -33,9 +37,31 @@ public class LiveService {
         if (room == null) throw new BizException("直播间不存在");
         RoomDTO dto = new RoomDTO();
         dto.setRoom(room);
-        dto.setProducts(productMapper.selectList(Wrappers.<LiveProduct>lambdaQuery()
-                .eq(LiveProduct::getRoomId, roomId).orderByAsc(LiveProduct::getSort)));
+        List<LiveProductVO> vos = productMapper.selectList(Wrappers.<LiveProduct>lambdaQuery()
+                .eq(LiveProduct::getRoomId, roomId).orderByAsc(LiveProduct::getSort))
+                .stream().map(this::toVO).toList();
+        dto.setProducts(vos);
         return dto;
+    }
+
+    private LiveProductVO toVO(LiveProduct lp) {
+        LiveProductVO vo = new LiveProductVO();
+        vo.setId(lp.getId());
+        vo.setRoomId(lp.getRoomId());
+        vo.setProductId(lp.getProductId());
+        vo.setLivePrice(lp.getLivePrice());
+        vo.setSort(lp.getSort());
+        vo.setSoldCount(lp.getSoldCount());
+        Product p = productRepo.selectById(lp.getProductId());
+        if (p != null) {
+            vo.setProductName(p.getName());
+            vo.setProductImage(p.getMainImage());
+            vo.setSpecText(p.getSpecText());
+            vo.setPrice(p.getPrice());
+            vo.setStock(p.getStock());
+            vo.setOrigin(p.getOrigin());
+        }
+        return vo;
     }
 
     public LiveRoom create(Long sellerId, RoomDTO dto) {
