@@ -24,7 +24,9 @@
 
     <el-dialog v-model="productDialog" title="挂载直播商品" width="520px">
       <div v-for="(p, i) in products" :key="i" style="display:flex; gap:8px; margin-bottom:8px;">
-        <el-input-number v-model="p.productId" :min="1" placeholder="商品ID" />
+        <el-select v-model="p.productId" placeholder="选择商品" filterable style="width:220px">
+          <el-option v-for="prod in productOptions" :key="prod.id" :label="prodLabel(prod)" :value="prod.id" />
+        </el-select>
         <el-input-number v-model="p.livePrice" :precision="2" :min="0" placeholder="直播价" />
         <el-input-number v-model="p.sort" :min="0" placeholder="排序" />
         <el-button @click="products.splice(i, 1)">删</el-button>
@@ -44,6 +46,7 @@ const createDialog = ref(false);
 const createForm = ref({});
 const productDialog = ref(false);
 const products = ref([]);
+const productOptions = ref([]);
 let currentRoom = 0;
 
 async function load() {
@@ -59,14 +62,16 @@ async function setStatus(row, status) {
   await request.put('/live/rooms/' + row.id + '/status', { status });
   load();
 }
+function prodLabel(prod) { return (prod.name || '') + ' (ID:' + prod.id + ')'; }
+
 function openProducts(row) {
   currentRoom = row.id;
-  products.value = [{ productId: 1, livePrice: 0, sort: 0 }];
+  products.value = [{ productId: null, livePrice: 0, sort: 0 }];
   productDialog.value = true;
 }
 async function saveProducts() {
   await request.put('/live/rooms/' + currentRoom + '/products', products.value);
   productDialog.value = false;
 }
-onMounted(load);
+onMounted(async () => { await load(); productOptions.value = (await request.get('/products?page=1&size=100')).records; });
 </script>
