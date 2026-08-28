@@ -10,3 +10,4 @@ dist/
 *.iml
 .DS_Store
 Thumbs.db
+miniprogram/project.private.config.json
