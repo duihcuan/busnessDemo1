@@ -6,8 +6,8 @@
         <el-menu-item index="/products">商品管理</el-menu-item>
         <el-menu-item index="/orders">订单管理</el-menu-item>
         <el-menu-item index="/live">直播管理</el-menu-item>
-        <el-menu-item index="/trace">溯源维护</el-menu-item>
-        <el-menu-item index="/knowledge">知识库管理</el-menu-item>
+        <el-menu-item v-if="isAdmin" index="/trace">溯源维护</el-menu-item>
+        <el-menu-item v-if="isAdmin" index="/knowledge">知识库管理</el-menu-item>
       </el-menu>
     </el-aside>
     <el-container>
@@ -21,10 +21,12 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 
 const auth = useAuthStore();
+const isAdmin = computed(() => auth.user.role === 'ADMIN');
 const router = useRouter();
 function onLogout() { auth.logout(); router.push('/login'); }
 </script>
