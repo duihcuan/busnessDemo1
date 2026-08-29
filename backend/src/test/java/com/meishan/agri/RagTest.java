@@ -112,4 +112,16 @@ class RagTest extends BaseTest {
                         .content("{\"question\":{\"x\":1}}"))
                 .andExpect(jsonPath("$.code").value(400));
     }
+
+    @Test
+    void greetingIntentSkipsAiCall() throws Exception {
+        String token = adminToken();
+        mockMvc.perform(post("/api/rag/chat").header("satoken", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"question\":\"你好\"}"))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.data.offline").value(false))
+                .andExpect(jsonPath("$.data.answer").value(org.hamcrest.Matchers.notNullValue()));
+        org.mockito.Mockito.verify(chatClient, org.mockito.Mockito.never()).complete(org.mockito.ArgumentMatchers.anyList());
+    }
 }

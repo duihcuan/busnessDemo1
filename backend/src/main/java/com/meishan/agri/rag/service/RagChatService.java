@@ -12,6 +12,8 @@ import com.meishan.agri.rag.entity.KnowledgeDoc;
 import com.meishan.agri.rag.entity.RagMessage;
 import com.meishan.agri.rag.mapper.KnowledgeDocMapper;
 import com.meishan.agri.rag.mapper.RagMessageMapper;
+import com.meishan.agri.rag.intent.IntentService;
+import com.meishan.agri.rag.intent.IntentType;
 import com.meishan.agri.rag.retrieval.RetrievalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,10 +39,15 @@ public class RagChatService {
     private final ChatClient chatClient;
     private final RagMessageMapper messageMapper;
     private final KnowledgeDocMapper docMapper;
+    private final IntentService intentService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Transactional
     public ChatResponse chat(Long userId, ChatRequest req) {
+        IntentType intent = intentService.classify(req.getQuestion());
+        if (intent == IntentType.GREETING) {
+            return greeting(userId, req);
+        }
         String conversationId = req.getConversationId() == null || req.getConversationId().isBlank()
                 ? UUID.randomUUID().toString() : req.getConversationId();
         List<RetrievalService.Hit> hits = retrievalService.retrieve(req.getQuestion());
@@ -78,6 +85,21 @@ public class RagChatService {
         resp.setConversationId(conversationId);
         resp.setSources(sources);
         resp.setOffline(offline);
+        resp.setAssistantMessageId(saved.getId());
+        return resp;
+    }
+
+    private ChatResponse greeting(Long userId, ChatRequest req) {
+        String conversationId = req.getConversationId() == null || req.getConversationId().isBlank()
+                ? UUID.randomUUID().toString() : req.getConversationId();
+        saveMessage(userId, conversationId, "USER", req.getQuestion(), null, "NONE");
+        String answer = "您好！欢迎来到眉山泡菜柑橘助农电商平台。我是您的助农智能客服，很高兴为您服务。请问有什么可以帮您？无论是选购商品、咨询售后，还是了解农户开店，都可以问我哦！";
+        RagMessage saved = saveMessage(userId, conversationId, "ASSISTANT", answer, "[]", "NONE");
+        ChatResponse resp = new ChatResponse();
+        resp.setAnswer(answer);
+        resp.setConversationId(conversationId);
+        resp.setSources(List.of());
+        resp.setOffline(false);
         resp.setAssistantMessageId(saved.getId());
         return resp;
     }
