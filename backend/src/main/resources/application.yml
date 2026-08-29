@@ -36,3 +36,8 @@ deepseek:
 rag:
   bge-model-path: backend/models/bge-small-zh-v1.5.onnx
   top-k: 3
+
+dashscope:
+  api-key: ${DASHSCOPE_API_KEY:}
+  base-url: https://dashscope.aliyuncs.com
+  model: text-embedding-v3

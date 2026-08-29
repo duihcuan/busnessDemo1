@@ -6,12 +6,14 @@ import com.meishan.agri.rag.entity.KbChunk;
 import com.meishan.agri.rag.entity.KnowledgeDoc;
 import com.meishan.agri.rag.mapper.KbChunkMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.ByteBuffer;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DocumentIngestService {
@@ -28,7 +30,9 @@ public class DocumentIngestService {
             c.setChunkIndex(i);
             c.setContent(chunks.get(i));
             if (embeddingClient.isEnabled()) {
-                float[] v = embeddingClient.encode(chunks.get(i));
+                float[] v = null;
+                try { v = embeddingClient.encode(chunks.get(i)); }
+                catch (Exception e) { log.warn("第 {} 块向量化失败，跳过向量：{}", i, e.getMessage()); }
                 c.setVector(v == null ? null : toBytes(v));
             }
             kbChunkMapper.insert(c);

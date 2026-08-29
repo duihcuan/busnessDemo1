@@ -6,12 +6,14 @@ import com.meishan.agri.rag.config.RagProperties;
 import com.meishan.agri.rag.entity.KbChunk;
 import com.meishan.agri.rag.mapper.KbChunkMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RetrievalService {
@@ -28,7 +30,11 @@ public class RetrievalService {
         List<String> texts = chunks.stream().map(KbChunk::getContent).toList();
         List<KeywordRetriever.Scored> kw = keywordRetriever.score(question, texts);
 
-        float[] queryVec = embeddingClient.isEnabled() ? embeddingClient.encode(question) : null;
+        float[] queryVec = null;
+        if (embeddingClient.isEnabled()) {
+            try { queryVec = embeddingClient.encode(question); }
+            catch (Exception e) { log.warn("查询向量化失败，本次仅用关键词检索：{}", e.getMessage()); }
+        }
         List<Hit> hits = new ArrayList<>();
         for (int i = 0; i < chunks.size(); i++) {
             double kwScore = kw.get(i).score();
