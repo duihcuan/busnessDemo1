@@ -26,6 +26,9 @@ public class AuthService {
     @Value("${wx.secret:}") private String secret;
 
     public LoginResponse mockLogin(LoginRequest req) {
+        if (req.getPhone() == null || !req.getPhone().matches("1\\d{10}")) {
+            throw new BizException("手机号格式不正确");
+        }
         User user = userMapper.selectOne(Wrappers.<User>lambdaQuery()
                 .eq(User::getPhone, req.getPhone()));
         if (user == null) {

@@ -103,4 +103,13 @@ class RagTest extends BaseTest {
                         .content("{\"question\":\"柑橘储存\"}"))
                 .andExpect(jsonPath("$.data.sources.length()").value(org.hamcrest.Matchers.greaterThanOrEqualTo(1)));
     }
+
+    @Test
+    void chatRejectsMalformedQuestion() throws Exception {
+        String token = adminToken();
+        mockMvc.perform(post("/api/rag/chat").header("satoken", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"question\":{\"x\":1}}"))
+                .andExpect(jsonPath("$.code").value(400));
+    }
 }

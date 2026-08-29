@@ -38,4 +38,12 @@ class AuthTest extends BaseTest {
                         .content("{\"username\":\"user1\",\"password\":\"123456\"}"))
                 .andExpect(jsonPath("$.code").value(400));
     }
+
+    @Test
+    void mockLoginRejectsInvalidPhone() throws Exception {
+        mockMvc.perform(post("/api/auth/mock-login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"phone\":\"1\",\"code\":\"123456\"}"))
+                .andExpect(jsonPath("$.code").value(400));
+    }
 }

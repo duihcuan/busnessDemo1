@@ -17,6 +17,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(cn.dev33.satoken.exception.NotRoleException.class)
     public Result<Void> notRole(cn.dev33.satoken.exception.NotRoleException e) { return Result.fail(403, "无权限"); }
 
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public Result<Void> notReadable(org.springframework.http.converter.HttpMessageNotReadableException e) {
+        return Result.fail(400, "请求参数格式错误");
+    }
+
+    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
+    public Result<Void> notValid(org.springframework.web.bind.MethodArgumentNotValidException e) {
+        return Result.fail(400, "请求参数校验失败");
+    }
+
     @ExceptionHandler(Exception.class)
     public Result<Void> other(Exception e) {
         log.error("unexpected error", e);
